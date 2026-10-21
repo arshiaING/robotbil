@@ -1,6 +1,11 @@
 # Testplan
 
-Her planlegger vi testene for prosjektet. Livstegn og terminalutskrift er registrert som bestått i [første del av T01](testlogg/2026-10-20-livstegn.md). Testing av motorer og sensorer er ikke startet.
+Her planlegger vi testene for prosjektet.
+Livstegn og terminalutskrift er registrert som bestått i [første del av T01](testlogg/2026-10-20-livstegn.md).
+Vi har også prøvd en enkel felles motortest og fått alle fire hjulene til å rotere.
+Bil-pakken er skrevet og kompilert. Byggingen er registrert i [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
+Oppstart, faktisk stopp og bevegelsene med den nye pakken gjenstår å teste fysisk.
+Sensorarbeidet er fortsatt planlagt. Hele T01 er ikke ferdig kontrollert.
 Testene er knyttet til [krav K1–K14](krav.md). T00 er kontrollen før vi begynner, og resultatene skal inn i [testloggen](testlogg/README.md).
 
 ## Før vi tester
@@ -8,7 +13,7 @@ Testene er knyttet til [krav K1–K14](krav.md). T00 er kontrollen før vi begyn
 Vi noterer kodeversjon, koblinger, strømforsyning og innstillinger.
 Da vet vi hvilket program og oppsett resultatet gjelder.
 
-Når vi begynner med motortestene, skal hjulene være fri. Vi skal bruke lavt pådrag og kunne koble fra motorstrømmen.
+Ved nye motortester skal hjulene først være fri. Vi skal begynne med lavt pådrag og kunne koble fra motorstrømmen.
 Den første sensortesten skal gjøres mens bilen står stille.
 En utskrift om at stopp er sendt er ikke en bekreftelse på at hjulene har stoppet.
 

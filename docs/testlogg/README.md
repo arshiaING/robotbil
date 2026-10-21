@@ -1,11 +1,13 @@
 # Testlogg
 
 Her skriver vi hva vi prøver, hva vi forventer og hva som faktisk skjer.
-Den første livstegntesten er registrert. Testing av motorstyring, kjøring og sensorer er ikke startet.
+Vi har registrert livstegntesten og byggingen av Bil-pakken.
+Bil er skrevet og kompilert. Bevegelsene med den nye pakken og sensorene er ikke fysisk testet ennå.
 
 ## Forsøk
 
 - [2026-10-20 - T01 livstegntest](2026-10-20-livstegn.md)
+- [2026-10-21 - T01 bygging av Bil-pakken](2026-10-21-bil-bygging.md)
 
 Under ligger malen vi bruker til nye forsøk.
 

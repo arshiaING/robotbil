@@ -2,15 +2,17 @@
 
 Her skriver vi hva vi har, hva vi vil bruke det til og hva vi må undersøke.
 Oversikten bygger på [Goodnotes-boken](<Robotbil Mecanum.pdf>) og notatene våre.
-Sensorarbeidet og motorstyringen er ikke startet.
+Motorstyringen i Bil er skrevet og kompilert. Vi har også prøvd en enkel felles motortest.
+Bevegelsene med den nye Bil-pakken er ikke fysisk testet ennå.
+Sensorarbeidet er fortsatt planlagt.
 
 ## Det vi har og planlegger å bruke
 
 | Del | Status | Hva vi skal undersøke |
 |---|---|---|
 | Metallchassis, fire Mecanum-hjul og fire DC-motorer | Tilgjengelig. | Mål, motorenes spennings- og strømkrav, hjulplassering og retning. |
-| Micro:bit V2 | Tilgjengelig. Skal programmeres i Ada. | Strømforsyning, pinner og programmet vi skal lage. |
-| Motorstyringskort merket Micro:bit Driver Expansion Board V2.0 | Tilgjengelig. Planlagt til de fire motorene. | Kortmodell, strømbehov, strømveier og stopp ved kommunikasjonsfeil. |
+| Micro:bit V2 | Tilgjengelig. Programmert i Ada. | Strømforsyning, pinner og programmet vi skal lage. |
+| Motorstyringskort merket Micro:bit Driver Expansion Board V2.0 | Tilgjengelig og brukt i den første felles motortesten. | Kortmodell, strømbehov, strømveier og stopp ved kommunikasjonsfeil. |
 | HC-SR04, 3 stk. | Tilgjengelig. Planlagt foran og på sidene. | Forsyning, signalnivåer, pinner og måleegenskaper. |
 | To motstander på 4,7 kΩ | Tilgjengelig. Kan brukes til spenningsdeling på Echo. | Motstandsverdier og passende signalnivå. Hver 5 V-sensor trenger sin egen tilpasning. |
 | HC-SR04, oppgitt 3,3–5 V-versjon | Bestilt. Vi har ikke registrert at de har kommet ennå. | Nøyaktig variant, strømforsyning og Echo-nivå. |
