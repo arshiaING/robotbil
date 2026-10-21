@@ -1,7 +1,9 @@
 # Plan for koblingene
 
 Her planlegger vi hvordan delene skal kobles sammen.
-Arbeidet med motorstyring og sensorer er ikke startet. Forslagene må kontrolleres før vi kobler og tester.
+Motorarbeidet er startet. Vi har prøvd en enkel felles motortest og fått alle fire hjulene til å rotere.
+Bil-pakken er skrevet og kompilert. Bevegelsene med denne pakken er ikke fysisk testet ennå.
+Sensorarbeidet er fortsatt planlagt. Sensorforslagene må kontrolleres før vi kobler og tester.
 
 ## Forslag til frontsensor
 
@@ -36,17 +38,18 @@ Vi skal bruke [DFRobots referanseside med koblingsskjema for V2.0](https://wiki.
 
 | Forbindelse | Plan | Hva må undersøkes? |
 |---|---|---|
-| Micro:bit → motorstyringskort | Bruke ekstern I2C. | Pinner, adresse, kontakttest, feilstatus og tidsgrenser. |
-| Motorstyringskort → fire motorer | Koble én motor til hver kanal. | Motorenes spennings- og strømkrav, hvilket hjul hver kanal styrer, retning og stopp. |
+| Micro:bit → motorstyringskort | Ekstern I2C er brukt i motorstyringen. | Pinner, adresse, kontakttest, feilstatus og tidsgrenser. |
+| Motorstyringskort → fire motorer | Alle fire motorene er prøvd i en enkel felles test. | Motorenes spennings- og strømkrav, hvilket hjul hver kanal styrer, retning og stopp. |
 | Venstre og høyre HC-SR04 | Legges til etter frontsensoren. | Pinner, strøm og hver sensors Echo-tilpasning. |
 | ESP32 ↔ Micro:bit | Bruke UART til manuell styring senere. | Kortmodell, TX/RX-pinner, signalnivåer og meldingsformat. |
 | Motorforsyning → kortet | Velge forsyning som passer motorene og kortet. | Spenning, belastning og av/på-løsning. |
 | Forsyning → Micro:bit og ESP32 | Planlegge strømveiene samlet. | Strømveier og felles GND, også ved USB-tilkobling. |
 
-Vi skal kartlegge hjulene når motorarbeidet starter. Da noterer vi hvilken kanal som styrer hvert hjul og hvilken vei det roterer.
+Kartleggingen vi bruker i koden står i [hjulkartleggingen](../motorplan/hjulkartlegging.md).
+Vi skal kontrollere hvilken motorutgang som styrer hvert hjul, hvilken vei det roterer og sammenhengen med M1 til M4 på kortet.
 Ledningsfarge alene er ikke nok til å identifisere en forbindelse; vi må følge pinnen og begge ender av ledningen.
 
-## Planlagt kontroll før første forsøk
+## Kontroll før nye forsøk
 
 Vi kobler fra strømmen før vi endrer ledninger. Pinner, felles GND og forsyning må kontrolleres før strømmen slås på.
 Første sensoravlesning skal gjøres med motorene stoppet. Ledninger og motstandsbein skal ikke komme borti chassis eller hjul.

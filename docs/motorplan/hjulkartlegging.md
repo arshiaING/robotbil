@@ -29,4 +29,18 @@ Motorpådraget var 2044.
           rf                         lf
 
                 BAK – Micro:bit
-```
+
+
+## Hva tallparene betyr 
+
+Hvert tallpar styrer motorpådraget i to motsatte retninger.
+Hvilken retning som blir fremover på bilen, avhenger av koblingen.
+
+pwm er pådraget vi regner ut fra kraft:
+
+pwm = (kraft * 4095) / 100
+
+kraft går fra 0 til 100. pwm går fra 0 til 4095.
+Dette er motorpådrag, ikke målt hjulfart.
+
+Tallparet (0, 0) brukes til å sende stopp.

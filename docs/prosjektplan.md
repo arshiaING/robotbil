@@ -20,11 +20,21 @@ Dette er våre valg for rekkefølgen på arbeidet. AI er ikke et krav fra lærer
 ## Hvor vi er nå
 
 Lærerens startoppsett og driverbibliotek er på plass.
-`main.adb` inneholder livstegntesten. Terminalutskriften «Kjorer.» er bekreftet i [første del av T01](testlogg/2026-10-20-livstegn.md).
-Tidsnøyaktigheten er ikke dokumentert med måling.
+Livstegntesten er gjennomført, og «Kjorer.» kom opp i terminalen.
+Resultatet står i [første del av T01](testlogg/2026-10-20-livstegn.md).
 
-Arbeidet med motorstyring, kjøring og sensoravlesning er ikke startet.
-Neste steg er motorstyring med oppstart og stopp. Hjulene skal kartlegges når vi begynner med motorene.
+Vi har prøvd en enkel felles motortest og fått alle fire hjulene til å rotere.
+Deretter samlet vi motorstyringen i Bil.
+V1, V2 og V3 er skrevet og kompilert sammen med hovedprogrammet.
+Se [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
+
+`main.adb` kaller nå bare `Bil.Initialize`, som klargjør kortet og sender stopp.
+Bevegelsene med den nye pakken er ikke fysisk testet ennå.
+Sensorarbeidet er ikke startet.
+
+Neste steg er å kontrollere oppstart, faktisk stopp og hjulretningene på bilen.
+Deretter tester vi én bevegelse om gangen.
+Motorarbeidet er beskrevet i [motorplanen](motorplan/motorplan.md).
 Resultater og målinger skal føres i testloggen.
 
 ## Planlagt system

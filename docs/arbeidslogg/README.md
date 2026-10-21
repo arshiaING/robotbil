@@ -6,6 +6,7 @@ Vi fyller inn faktisk arbeid. Oppgaver vi skal gjøre senere står i prosjektpla
 ## Arbeidsøkter
 
 - [2026-10-20 - livstegntest](2026-10-20-livstegn.md)
+- [2026-10-21 - motorstyring](2026-10-21-motorstyring.md)
 
 Under ligger malen vi bruker til nye arbeidsøkter.
 

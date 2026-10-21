@@ -9,6 +9,8 @@ Planleggingsboken vår i Goodnotes er utgangspunktet.
 |---|---|
 | [Robotbil Mecanum.pdf](<Robotbil Mecanum.pdf>) | Planleggingsboken med skisser og notater. |
 | [Prosjektplan](prosjektplan.md) | Målet, avgrensningen og rekkefølgen på arbeidet. |
+| [Motorplan](motorplan/motorplan.md) | Motorstyringen, status og neste steg. |
+| [Hjulkartlegging](motorplan/hjulkartlegging.md) | Hjulnavnene og retningene vi bruker i koden. |
 | [Krav](krav.md) | Lærerens krav og våre egne delmål. |
 | [Sensorer og utstyr](sensoroversikt.md) | Hva vi har og hva vi må undersøke. |
 | [Plan for koblingene](kobling/README.md) | Forslag til forbindelser som må kontrolleres før oppkobling. |
@@ -20,12 +22,20 @@ Planleggingsboken vår i Goodnotes er utgangspunktet.
 ## Hvor vi er nå
 
 Lærerens startoppsett og driverbibliotek er på plass.
+Livstegntesten er registrert i [testloggen](testlogg/2026-10-20-livstegn.md).
 
-`main.adb` inneholder livstegntesten. «Kjorer.» kom opp i terminalen.
-Testen er registrert som bestått for livstegn og terminalutskrift i [testloggen](testlogg/2026-10-20-livstegn.md).
-Tidsnøyaktigheten er ikke dokumentert med måling.
+Vi har også prøvd en enkel felles motortest. Etter videre testing fikk vi alle fire hjulene til å rotere.
+Forsøket er beskrevet i [motorplanen](motorplan/motorplan.md).
 
-Motorstyring, kjøring og sensoravlesning er ikke startet.
+Motorstyringen er nå samlet i Bil. V1, V2 og V3 er skrevet og kompilert.
+Byggingen er registrert i [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
+
+`main.adb` kaller foreløpig bare `Bil.Initialize`, som klargjør motorkortet og sender stopp.
+Deretter venter hovedprogrammet.
+
+Bevegelsene med den nye Bil-pakken er ikke fysisk testet ennå.
+Sensorarbeidet er fortsatt planlagt.
+Neste steg er å kontrollere oppstart og faktisk stopp, og så teste én bevegelse om gangen.
 
 ## Lærerens filer
 
