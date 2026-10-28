@@ -21,9 +21,7 @@ Sensorene på sidene kommer etter at frontsensoren fungerer.
 
 ## Utstyret som kommer
 
-- Micro:bit V2.
-- Motorkortet på bilen.
-- Én HC-SR04 for 3.3 V.
+- HC-SR04, oppgitt 3,3–5 V. Bestilt, men vi har ikke bekreftet at den har kommet ennå.
 
 ## Koblingene
 
@@ -36,25 +34,46 @@ Vi har koblet opp dette, men spenningene er ikke målt ennå.
 Med to like motstander og 5 V fra Echo er beregnet spenning
 ved P2 omtrent 2,5 V.
 
-## tid_høy/ultralydsensor forklart
+## hvordan ultralyd sensor fungere
 
-funksjonen skal måle tiden vi går fra **sensor -> vegg -> sensor** dette betyr tiden der motoren for høy signal
+sensoren bruker lyd til å måle avstand.
+vi sender et kort høyt signal på trig for å starte målingen.
 
-ved en vanlig måling viser tiden den er høy hvor lang tid lyden brukte frem og tilbake.
+lyden treffer veggen og kommer tilbake. dette er et ekko.
+micro:biten får et elektrisk tidssignal på echo.
+ved en vanlig måling viser tiden echo er høy hvor lang tid lyden brukte frem og tilbake.
+nårn den kommer tilbake for vi lav på echo.
+
+## tid_hoy/ultralydsensor forklart
+
+funksjonen skal måle hvor lenge echo er høyt. tiden henger sammen med turen
+**sensor -> vegg -> sensor**.
 
 kort tid betyr kort avstand, og lang tid betyr større avstand.
 
-### hvordan ultralyd sensor fungere
+`tid_hoy` skal kalles rett etter at `sjekk_ultralyd` har oppdaget høyt echo.
+`start_tid` husker når funksjonen startet, og `slutt_tid` er fristen 30 ms senere.
+hvis echo blir lavt før fristen, returnerer funksjonen tiden som har gått.
+hvis fristen nås, returnerer den `time_span_zero`, som skal behandles som ugyldig måling.
 
-sensoren bruker lyd til å måle avstand
+vi leser signalet i en løkke, så målingen er omtrentlig.
+fristen på 30 ms må også kontrolleres når vi tester.
 
-micro:biten får et elektrisk tidssignal
+## overfor forklart
 
-sensoren sier til microbiten høyt signal starter målingen
+funksjonjene gjær tid til cm.
 
-lyden treffer veggen og kommer tilbake. dette er et ekko
+**avstand i cm = tid i mikrosekunder / 58**
 
-nårn den kommer tilbake for vi lav
+formelen står i [databladet til HC-SR04](https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf).
+
+`to_duration` uttrykker tiden i sekunder. vi ganger med 1 000 000 for å få
+mikrosekunder. `natural` avrunder til nærmeste hele mikrosekund.
+heltallsdivisjonen på 58 gir hele centimeter og kaster resten.
+
+vi har skrevet `overfor`. parameteren heter `tid`, og den lokale konstanten
+heter `tid_mikro`. funksjonen brukes ikke fra `les_foran` ennå.
+bygging og fysisk sensortest er ikke bekreftet.
 
 ## Hvordan vi deler koden
 
@@ -66,6 +85,8 @@ Sensorpakken heter `Ultralyd`.
 - `Initialize` klargjør Trig som utgang og Echo som inngang.
 - `send_puls` sender en kort startpuls til sensoren.
 - `sjekk_ultralyd` venter på at Echo blir høyt, med en frist på 10 ms.
+- `tid_hoy` måler tiden frem til Echo blir lavt, med en frist på 30 ms.
+- `overfor` regner den målte tiden om til hele cm.
 - `les_foran` skal måle lengden på Echo-signalet og gi avstanden i cm.
 
 Verdien 0 skal bety at vi ikke fikk en gyldig måling.
@@ -77,18 +98,23 @@ Verdien 0 skal bety at vi ikke fikk en gyldig måling.
 | Oppkobling av frontsensor | Koblet opp etter gjennomgangen. Spenningene er ikke målt. |
 | Initialize | Skrevet. |
 | send_puls | Skrevet. |
-| sjekk_ultralyd | Foreslått, men ikke lagt inn i den lagrede koden ennå. |
+| sjekk_ultralyd | Skrevet med 10 ms frist. |
+| tid_hoy | Skrevet med 30 ms frist. |
+| overfor | Skrevet. Ikke bekreftet kompilert eller testet. |
 | les_foran | Beskrevet i .ads. Innholdet mangler. |
 | Sensorpakke brukt fra main | Ikke lagt inn. |
 | Kompilering av sensorpakken | Ikke bekreftet. |
-| Avstandsmåling på bilen | Ikke gjennomført. |
+| Avstandsmåling på bilen | Ikke bekreftet. |
+
+10 ms og 30 ms er foreløpige ventefrister i koden. De er ikke bekreftet med
+tidsmålinger. Bygging og fysisk sensortest er ikke bekreftet for noen av funksjonene.
 
 ## Rekkefølgen videre
 
-1. Lage venting på Echo med en tidsgrense.
-2. Måle hvor lenge Echo er høyt, også med en tidsgrense. **<-**
-3. Regne tiden om til avstand.
-4. Håndtere manglende eller ugyldige målinger.
+1. Lage venting på Echo med en tidsgrense. Skrevet, må testes.
+2. Måle hvor lenge Echo er høyt, også med en tidsgrense. Skrevet, må testes.
+3. Regne tiden om til avstand. Skrevet, må testes.
+4. Lage `les_foran` og håndtere manglende eller ugyldige målinger. **<-**
 5. Lage et testprogram som bruker Ultralyd og viser avstanden.
 6. Kompilere og kontrollere at sensorpakken faktisk blir bygget.
 7. Teste mot kjente avstander mens bilen står stille.
@@ -97,6 +123,13 @@ Verdien 0 skal bety at vi ikke fikk en gyldig måling.
 10. Legge til venstre og høyre sensor.
 
 ## Feil vi må håndtere
+
+- Echo blir ikke høyt. `sjekk_ultralyd` skal da gi `false` når fristen er passert.
+- Echo blir værende høyt. `tid_hoy` skal da gi `time_span_zero` når fristen er nådd.
+- Echo er allerede høyt før en ny måling. Dette må håndteres i `les_foran`.
+- En ugyldig måling eller verdien 0 skal ikke tolkes som fri vei.
+
+Dette er oppførsel vi skal kontrollere, ikke resultater fra tester.
 
 ## Testing
 

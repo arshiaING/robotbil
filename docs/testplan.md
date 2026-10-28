@@ -5,7 +5,8 @@ Livstegn og terminalutskrift er registrert som bestått i [første del av T01](t
 Vi har også prøvd en enkel felles motortest og fått alle fire hjulene til å rotere.
 Bil-pakken er skrevet og kompilert. Byggingen er registrert i [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
 Oppstart, faktisk stopp og bevegelsene med den nye pakken gjenstår å teste fysisk.
-Sensorarbeidet er fortsatt planlagt. Hele T01 er ikke ferdig kontrollert.
+Koden for frontsensoren er påbegynt. Sensoravlesningen er ikke ferdig, og bygging og fysisk sensortest er ikke bekreftet.
+Hele T01 er ikke ferdig kontrollert. Se [ultralydplanen](sensorplan/ultralyd/ultralydplan.md).
 Testene er knyttet til [krav K1–K14](krav.md). T00 er kontrollen før vi begynner, og resultatene skal inn i [testloggen](testlogg/README.md).
 
 ## Før vi tester
@@ -29,10 +30,13 @@ Lærerens eventuelle tallkrav går foran forslagene våre.
 | Målefeil | Hvor stort avvik vi godtar ved kjente avstander. | Ikke fastsatt |
 | Sensorperiode | Hvor ofte hver sensor skal måles. | Ikke fastsatt |
 | Målealder | Hvor gammel en måling kan være før den ikke kan brukes. | Ikke fastsatt |
-| Tidsgrense for Echo | Hvor lenge vi kan vente på at signalet begynner og slutter. | Ikke fastsatt |
+| Tidsgrense for Echo | Hvor lenge vi kan vente på at signalet begynner og slutter. | Foreløpig 10 ms til høyt Echo og 30 ms til lavt Echo i koden. Må begrunnes og testes. |
 | Oppgaveperioder og deadlines | Når hver oppgave skal kjøre og når den må være ferdig. | Ikke fastsatt |
 | Tid til stopp | Tid fra hendelse til stoppkommando, og separat tid til fysisk stillstand. | Ikke fastsatt |
 | Kommandoalder, senere | Hvor lenge en manuell kommando kan brukes uten en ny. | Ikke fastsatt |
+
+10 ms og 30 ms er foreløpige ventefrister, ikke bevis på samlet responstid eller at en deadline er oppfylt.
+Løkkene bruker prosessoren mens de venter. Dette må tas med når vi vurderer kjøretid og samtidige oppgaver.
 
 Vi skriver også antall forsøk, underlag, hindringer og målemetode.
 En grense skal ikke flyttes bare fordi en test feiler.

@@ -3,21 +3,22 @@
 Her planlegger vi hvordan delene skal kobles sammen.
 Motorarbeidet er startet. Vi har prøvd en enkel felles motortest og fått alle fire hjulene til å rotere.
 Bil-pakken er skrevet og kompilert. Bevegelsene med denne pakken er ikke fysisk testet ennå.
-Sensorarbeidet er fortsatt planlagt. Sensorforslagene må kontrolleres før vi kobler og tester.
+Frontsensoren er koblet opp etter gjennomgangen, og vi har begynt på koden i Ultralyd.
+Spenningene er ikke målt. Bygging og fysisk sensortest er ikke bekreftet.
 
-## Forslag til frontsensor
+## Oppkobling av frontsensor
 
-Et foreløpig forslag er P1 til Trig og P2 til Echo på HC-SR04.
-Vi må kontrollere pinnene, strømforsyningen og signalnivåene før vi bruker forslaget.
+Vi bruker den gamle HC-SR04 for 5 V med P1 til Trig og P2 til Echo.
+Tabellen viser oppkoblingen vi har gjort. Pinner, strømforsyning og signalnivåer må fortsatt kontrolleres før sensortesten.
 
-| Sensorpinne | Forslag til forbindelse | Hva må kontrolleres? |
+| Sensorpinne | Forbindelse | Hva må kontrolleres? |
 |---|---|---|
 | VCC | VIN på motorkortets S-rad, ved S1, dersom kortet får 5 V. | Faktisk forsyningsspenning og riktig VIN-pinne. S1-signalpinnen er ikke strømforsyning. |
 | GND | Felles GND for sensor, Micro:bit, motorkort og spenningsdeler. | At alle delene har samme jordforbindelse. |
 | Trig | Grønn signalpinne ved P1. | At P1 er ledig og riktig pinne er valgt. |
 | Echo | Én motstand på 4,7 kΩ fra Echo til et felles punkt. Punktet går til P2 og gjennom en annen motstand på 4,7 kΩ til GND. | Motstandsverdier, sammenkobling og signalspenning før signalet kobles til Micro:bit. |
 
-Forslag til spenningsdeler:
+Spenningsdeleren vi har koblet opp:
 
 ```text
 Echo --- 4,7 kΩ ---+--- P2
@@ -28,7 +29,7 @@ Echo --- 4,7 kΩ ---+--- P2
 ```
 
 Med 5 V inn og to like motstander blir beregnet spenning ved P2 omtrent 2,5 V.
-Spenningen må måles når oppsettet lages.
+Spenningen er ikke målt ennå og må kontrolleres før sensortesten.
 Vanlig HC-SR04 kan gi 5 V på Echo; [Adafruit forklarer hvorfor signalet må tilpasses en 3 V-inngang](https://learn.adafruit.com/ultrasonic-sonar-distance-sensors/pinouts).
 
 
@@ -54,5 +55,5 @@ Ledningsfarge alene er ikke nok til å identifisere en forbindelse; vi må følg
 Vi kobler fra strømmen før vi endrer ledninger. Pinner, felles GND og forsyning må kontrolleres før strømmen slås på.
 Første sensoravlesning skal gjøres med motorene stoppet. Ledninger og motstandsbein skal ikke komme borti chassis eller hjul.
 
-Når vi kobler opp, oppdaterer vi tabellen med de faktiske forbindelsene og legger inn bilder ved behov.
+Vi oppdaterer tabellen når koblingene endres og legger inn bilder ved behov.
 Kontrollene skal føres i [testloggen](../testlogg/README.md), med henvisning til T00 i [testplanen](../testplan.md).
