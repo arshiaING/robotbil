@@ -78,4 +78,44 @@ package body Ultralyd is
    end tid_hoy;
 
 
+
+
+
+   function overfor (tid : time_span) return natural is
+      tid_mikro : constant natural := natural (to_duration (tid) * 1_000_000); -- mikro og avrunder 
+   begin
+      return tid_mikro / 58;
+   end overfor;
+
+
+   function les_foran return natural is
+      tid : time_span;
+      avstand : natural;
+   begin
+      -- echo skal være lavt før en ny måling
+      if echo.set then
+         return 0;
+      end if;
+
+      send_puls;
+
+      if not sjekk_ultralyd then
+         return 0;
+      end if;
+
+      
+      
+      
+      tid := tid_hoy;
+      avstand := overfor (tid);
+
+      if avstand not in 2 .. 400 then
+         return 0;
+      end if;
+
+      return avstand;
+   end les_foran;
+
+
+
 end Ultralyd;
