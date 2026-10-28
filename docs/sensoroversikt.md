@@ -4,7 +4,8 @@ Her skriver vi hva vi har, hva vi vil bruke det til og hva vi må undersøke.
 Oversikten bygger på [Goodnotes-boken](<Robotbil Mecanum.pdf>) og notatene våre.
 Motorstyringen i Bil er skrevet og kompilert. Vi har også prøvd en enkel felles motortest.
 Bevegelsene med den nye Bil-pakken er ikke fysisk testet ennå.
-Sensorarbeidet er fortsatt planlagt.
+Vi har begynt på koden for frontsensoren i Ultralyd. Sensoravlesningen er ikke ferdig,
+og bygging og fysisk sensortest er ikke bekreftet. Se [ultralydplanen](sensorplan/ultralyd/ultralydplan.md).
 
 ## Det vi har og planlegger å bruke
 
@@ -13,8 +14,8 @@ Sensorarbeidet er fortsatt planlagt.
 | Metallchassis, fire Mecanum-hjul og fire DC-motorer | Tilgjengelig. | Mål, motorenes spennings- og strømkrav, hjulplassering og retning. |
 | Micro:bit V2 | Tilgjengelig. Programmert i Ada. | Strømforsyning, pinner og programmet vi skal lage. |
 | Motorstyringskort merket Micro:bit Driver Expansion Board V2.0 | Tilgjengelig og brukt i den første felles motortesten. | Kortmodell, strømbehov, strømveier og stopp ved kommunikasjonsfeil. |
-| HC-SR04, 3 stk. | Tilgjengelig. Planlagt foran og på sidene. | Forsyning, signalnivåer, pinner og måleegenskaper. |
-| To motstander på 4,7 kΩ | Tilgjengelig. Kan brukes til spenningsdeling på Echo. | Motstandsverdier og passende signalnivå. Hver 5 V-sensor trenger sin egen tilpasning. |
+| HC-SR04, 3 stk. | Tilgjengelig. Én 5 V-sensor er koblet opp som frontsensor. Sidesensorene kommer senere. | Forsyning, signalnivåer, pinner og måleegenskaper. |
+| To motstander på 4,7 kΩ | Brukt til spenningsdeling på frontsensorens Echo. Spenningen er ikke målt. | Motstandsverdier og passende signalnivå. Hver 5 V-sensor trenger sin egen tilpasning. |
 | HC-SR04, oppgitt 3,3–5 V-versjon | Bestilt. Vi har ikke registrert at de har kommet ennå. | Nøyaktig variant, strømforsyning og Echo-nivå. |
 | ESP32 med USB-C | Oppgitt tilgjengelig. | Kortmodell, strøm og forbindelsen til Micro:bit. |
 | Raspberry Pi 5, oppgitt 8 GB RAM | Oppgitt tilgjengelig med minnekort og operativsystem. | Egen strømforsyning og nettverk. Den skal stå utenfor bilen. |
@@ -32,13 +33,13 @@ Første versjon planlegges derfor uten måling av faktisk hjulfart.
 
 ## Første sensortest - planlagt
 
-Når vi begynner med sensorene, skal vi først prøve én HC-SR04 med bilen i ro.
+Den første fysiske sensortesten skal gjøres med én HC-SR04 og bilen i ro.
 Vi skal få avstanden opp i terminalen før vi bruker målingen til å styre bilen.
 Etter dette skal vi prøve stopp foran en hindring og deretter sensorene på sidene.
 
-Vi kan begynne med en 5 V-sensor. Vanlig HC-SR04 kan sende 5 V på Echo, så signalet må tilpasses før det går til Micro:bit.
+Vi bruker først den gamle 5 V-sensoren. Vanlig HC-SR04 kan sende 5 V på Echo, så signalet må tilpasses før det går til Micro:bit.
 Se [Adafruits forklaring av Trig, Echo og spenningsdeling](https://learn.adafruit.com/ultrasonic-sonar-distance-sensors/pinouts).
-Et forslag med to motstander står i [planen for koblingene](kobling/README.md).
+Oppkoblingen med to motstander står i [planen for koblingene](kobling/README.md). Spenningene er ikke målt ennå.
 
 De bestilte sensorene må kontrolleres når de kommer. Vi må vite hvilken spenning de trenger og hva de sender på Echo.
 Hvis variantene bruker samme Trig/Echo-grensesnitt, kan vi undersøke om samme avlesningskode passer til begge.

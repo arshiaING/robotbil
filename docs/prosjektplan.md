@@ -30,9 +30,12 @@ Se [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
 
 `main.adb` kaller nå bare `Bil.Initialize`, som klargjør kortet og sender stopp.
 Bevegelsene med den nye pakken er ikke fysisk testet ennå.
-Sensorarbeidet er ikke startet.
+Vi har begynt på frontsensoren i Ultralyd. Oppsett, startpuls, venting på Echo og måling av hvor lenge Echo er høyt er skrevet.
+Omregning til cm er skrevet i `overfor`. `les_foran` mangler innhold, og sensorpakken brukes ikke fra `main.adb`.
+Bygging og fysisk sensortest er ikke bekreftet. Se [ultralydplanen](sensorplan/ultralyd/ultralydplan.md).
 
-Neste steg er å kontrollere oppstart, faktisk stopp og hjulretningene på bilen.
+For sensoren er neste steg å lage `les_foran`, som skal bruke delene sammen.
+For motorene gjenstår kontroll av oppstart, faktisk stopp og hjulretningene på bilen.
 Deretter tester vi én bevegelse om gangen.
 Motorarbeidet er beskrevet i [motorplanen](motorplan/motorplan.md).
 Resultater og målinger skal føres i testloggen.

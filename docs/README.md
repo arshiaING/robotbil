@@ -13,6 +13,7 @@ Planleggingsboken vår i Goodnotes er utgangspunktet.
 | [Hjulkartlegging](motorplan/hjulkartlegging.md) | Hjulnavnene og retningene vi bruker i koden. |
 | [Krav](krav.md) | Lærerens krav og våre egne delmål. |
 | [Sensorer og utstyr](sensoroversikt.md) | Hva vi har og hva vi må undersøke. |
+| [Ultralydplan](sensorplan/ultralyd/ultralydplan.md) | Frontsensoren, koden vi har skrevet og neste steg. |
 | [Plan for koblingene](kobling/README.md) | Forslag til forbindelser som må kontrolleres før oppkobling. |
 | [Testplan](testplan.md) | Hva vi skal teste og hvordan. |
 | [Testlogg](testlogg/README.md) | Forsøk, resultater og mal for nye tester. |
@@ -34,8 +35,11 @@ Byggingen er registrert i [byggeloggen](testlogg/2026-10-21-bil-bygging.md).
 Deretter venter hovedprogrammet.
 
 Bevegelsene med den nye Bil-pakken er ikke fysisk testet ennå.
-Sensorarbeidet er fortsatt planlagt.
-Neste steg er å kontrollere oppstart og faktisk stopp, og så teste én bevegelse om gangen.
+Vi har begynt på koden for frontsensoren i Ultralyd. Oppsett, startpuls, venting på Echo og måling av hvor lenge Echo er høyt er skrevet.
+Omregning til cm er skrevet i `overfor`, og `les_foran` mangler fortsatt innhold.
+Sensorpakken brukes ikke fra `main.adb`, og bygging og fysisk sensortest er ikke bekreftet.
+For sensoren er neste steg å lage `les_foran`, som skal bruke delene sammen.
+For motorene gjenstår kontroll av oppstart og faktisk stopp, og deretter én bevegelse om gangen.
 
 ## Lærerens filer
 

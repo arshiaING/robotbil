@@ -5,12 +5,12 @@ Høyre og venstre er sett i bilens kjøreretning.
 
 ## Koblingene
 
-Parameter i biblioteket | Hjul som faktisk reagerte | Innstilling for fremover |
-|---|---|---|---|
-| `rf` | Venstre bak | Fremover | 
-| `rb` | Venstre foran | Fremover | 
-| `lf` | Høyre bak | Bakover | 
-| `lb` | Høyre foran | Bakover | 
+| Parameter i biblioteket | Hjul som faktisk reagerte | Innstilling for fremover |
+|---|---|---|
+| `rf` | Venstre bak | Fremover |
+| `rb` | Venstre foran | Fremover |
+| `lf` | Høyre bak | Bakover |
+| `lb` | Høyre foran | Bakover |
 
 ## Første motortest
 
@@ -31,7 +31,7 @@ Motorpådraget var 2044.
                 BAK – Micro:bit
 
 
-## Hva tallparene betyr 
+## Hva tallparene betyr
 
 Hvert tallpar styrer motorpådraget i to motsatte retninger.
 Hvilken retning som blir fremover på bilen, avhenger av koblingen.
