@@ -60,4 +60,22 @@ package body Ultralyd is
       end loop;
    end sjekk_ultralyd;
 
+
+   function tid_hoy return time_span is
+      start_tid : constant time := clock; -- skal ikke endres 
+      slutt_tid : constant time := start_tid + milliseconds (30);
+   begin
+      loop
+         -- avbryter hvis echo blir værende høyt
+         if clock >= slutt_tid then
+            return time_span_zero;
+         end if;
+
+         if not echo.set then -- lav når echo = hæy og høy når echo = lav
+            return clock - start_tid;
+         end if;
+      end loop;
+   end tid_hoy;
+
+
 end Ultralyd;

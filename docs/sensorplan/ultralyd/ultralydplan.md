@@ -19,7 +19,7 @@ Sensorene på sidene kommer etter at frontsensoren fungerer.
 - Koblingsbrett og ledninger.
 - Powerbank, oppgitt til 5 V / 2 A, til motorkortet.
 
-## Utstyret som kommer 
+## Utstyret som kommer
 
 - Micro:bit V2.
 - Motorkortet på bilen.
@@ -27,26 +27,46 @@ Sensorene på sidene kommer etter at frontsensoren fungerer.
 
 ## Koblingene
 
-Trig går til P1.
-Echo går gjennom spenningsdeleren til P2.
-VCC går til VIN ved S1 på motorkortet.
-Sensoren og spenningsdeleren har felles GND med kortet.
+- Trig går til P1.
+- Echo går gjennom spenningsdeleren til P2.
+- VCC går til VIN ved S1 på motorkortet.
+- Sensoren og spenningsdeleren har felles GND med kortet.
 
 Vi har koblet opp dette, men spenningene er ikke målt ennå.
 Med to like motstander og 5 V fra Echo er beregnet spenning
 ved P2 omtrent 2,5 V.
 
+## tid_høy/ultralydsensor forklart
+
+funksjonen skal måle tiden vi går fra **sensor -> vegg -> sensor** dette betyr tiden der motoren for høy signal
+
+ved en vanlig måling viser tiden den er høy hvor lang tid lyden brukte frem og tilbake.
+
+kort tid betyr kort avstand, og lang tid betyr større avstand.
+
+### hvordan ultralyd sensor fungere
+
+sensoren bruker lyd til å måle avstand
+
+micro:biten får et elektrisk tidssignal
+
+sensoren sier til microbiten høyt signal starter målingen
+
+lyden treffer veggen og kommer tilbake. dette er et ekko
+
+nårn den kommer tilbake for vi lav
+
 ## Hvordan vi deler koden
 
-Sensorpakken heter Ultralyd.
+Sensorpakken heter `Ultralyd`.
 
-ultralyd.ads beskriver kommandoene resten av programmet kan bruke.
-ultralyd.adb inneholder selve oppsettet og avlesningen.
+- `ultralyd.ads` beskriver kommandoene resten av programmet kan bruke.
+- `ultralyd.adb` inneholder selve oppsettet og avlesningen.
 
-Initialize klargjør Trig som utgang og Echo som inngang.
-send_puls sender en kort startpuls til sensoren.
-sjekk_ultralyd venter på at Echo blir høyt, med en frist på 10 ms.
-les_foran skal måle lengden på Echo-signalet og gi avstanden i cm.
+- `Initialize` klargjør Trig som utgang og Echo som inngang.
+- `send_puls` sender en kort startpuls til sensoren.
+- `sjekk_ultralyd` venter på at Echo blir høyt, med en frist på 10 ms.
+- `les_foran` skal måle lengden på Echo-signalet og gi avstanden i cm.
 
 Verdien 0 skal bety at vi ikke fikk en gyldig måling.
 
@@ -66,7 +86,7 @@ Verdien 0 skal bety at vi ikke fikk en gyldig måling.
 ## Rekkefølgen videre
 
 1. Lage venting på Echo med en tidsgrense.
-2. Måle hvor lenge Echo er høyt, også med en tidsgrense.
+2. Måle hvor lenge Echo er høyt, også med en tidsgrense. **<-**
 3. Regne tiden om til avstand.
 4. Håndtere manglende eller ugyldige målinger.
 5. Lage et testprogram som bruker Ultralyd og viser avstanden.
@@ -77,8 +97,6 @@ Verdien 0 skal bety at vi ikke fikk en gyldig måling.
 10. Legge til venstre og høyre sensor.
 
 ## Feil vi må håndtere
-
-
 
 ## Testing
 
