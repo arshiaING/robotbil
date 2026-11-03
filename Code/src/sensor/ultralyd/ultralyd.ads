@@ -5,21 +5,15 @@
 
 
 
-package Ultralyd is
- -- v1 
-   procedure Initialize;
+package ultralyd is
 
-   -- Avstand i cm. 0 betyr ugyldig mling.
-   function les_foran return Natural;
+   procedure initialize;
 
+   -- avstand i cm. 0 betyr ugyldig måling
+   -- v1
+   function les_foran return natural;
+   -- v2
+   function les_venstre return natural;
+   function les_hoyre return natural;
 
-
-
-
-
-
-
-
-
-
-end Ultralyd;
+end ultralyd;

@@ -12,6 +12,13 @@ package body Ultralyd is
    Trig : GPIO_Point renames MicroBit.MB_P1;
    Echo : GPIO_Point renames MicroBit.MB_P2;
 
+   Trig_venstre : GPIO_Point renames MicroBit.MB_P8;
+   Echo_venstre : GPIO_Point renames MicroBit.MB_P13;
+
+   Trig_hoyre : GPIO_Point renames MicroBit.MB_P14;
+   Echo_hoyre : GPIO_Point renames MicroBit.MB_P15;
+
+
 
       procedure Initialize is
       oppsett : GPIO_Configuration :=
@@ -22,10 +29,18 @@ package body Ultralyd is
          Sense        => Sense_Disabled);
    begin
       Trig.Clear;
+      Trig_venstre.Clear;
+      Trig_hoyre.Clear;
+
       Trig.Configure_IO (oppsett);
+      Trig_venstre.Configure_IO (oppsett);
+      Trig_hoyre.Configure_IO (oppsett);
 
       oppsett.Mode := Mode_In;
+
       Echo.Configure_IO (oppsett);
+      Echo_venstre.Configure_IO (oppsett);
+      Echo_hoyre.Configure_IO (oppsett);
    end Initialize;
 
 
@@ -33,8 +48,8 @@ package body Ultralyd is
 
 
 
- -- snder en startpuls 
-      procedure send_puls is
+ -- sender en startpuls
+      procedure send_puls (Trig : in out GPIO_Point) is
    begin
       Trig.Clear;
       MicroBit.TimeHighspeed.Delay_Us (2);
@@ -44,25 +59,30 @@ package body Ultralyd is
       Trig.Clear;
    end send_puls;
 
- --  venter på at echo signalet hæyt med en ventefrist på 10 millisekunder.
-   function sjekk_ultralyd return boolean is
+
+
+ -- venter på høyt echo med en frist på 10 millisekunder
+   function sjekk_ultralyd (Echo : GPIO_Point) return boolean is
       tid : constant time := clock + Milliseconds (10);
    begin
-      loop 
+      loop
 
-      if clock > tid then
+      if clock >= tid then
          return false;
       end if;
 
-      if Echo.set then
+      if Echo.Set then
          return true;
       end if;
+
       end loop;
    end sjekk_ultralyd;
 
 
-   function tid_hoy return time_span is
-      start_tid : constant time := clock; -- skal ikke endres 
+
+
+   function tid_hoy (Echo : GPIO_Point) return time_span is
+      start_tid : constant time := clock; -- skal ikke endres
       slutt_tid : constant time := start_tid + milliseconds (30);
    begin
       loop
@@ -71,7 +91,7 @@ package body Ultralyd is
             return time_span_zero;
          end if;
 
-         if not echo.set then -- lav når echo = hæy og høy når echo = lav
+         if not Echo.Set then -- echo er lavt
             return clock - start_tid;
          end if;
       end loop;
@@ -81,40 +101,81 @@ package body Ultralyd is
 
 
 
+
    function overfor (tid : time_span) return natural is
-      tid_mikro : constant natural := natural (to_duration (tid) * 1_000_000); -- mikro og avrunder 
+      tid_mikro : constant natural :=
+        natural (to_duration (tid) * 1_000_000); -- mikro og avrunder
    begin
       return tid_mikro / 58;
    end overfor;
 
 
-   function les_foran return natural is
+
+
+ -- felles måling for alle sensorene
+   procedure les_sensor
+     (Trig : in out GPIO_Point;
+      Echo : GPIO_Point;
+      avstand : out natural)
+   is
       tid : time_span;
-      avstand : natural;
    begin
+      avstand := 0;
+
       -- echo skal være lavt før en ny måling
-      if echo.set then
-         return 0;
+      if Echo.Set then
+         return;
       end if;
 
-      send_puls;
+      send_puls (Trig);
 
-      if not sjekk_ultralyd then
-         return 0;
+      if not sjekk_ultralyd (Echo) then
+         return;
       end if;
 
-      
-      
-      
-      tid := tid_hoy;
+
+
+      tid := tid_hoy (Echo);
       avstand := overfor (tid);
 
       if avstand not in 2 .. 400 then
-         return 0;
+         avstand := 0;
       end if;
+
+   end les_sensor;
+
+
+
+
+   function les_foran return natural is
+      avstand : natural;
+   begin
+      les_sensor (Trig, Echo, avstand);
 
       return avstand;
    end les_foran;
+
+
+
+
+   function les_venstre return natural is
+      avstand : natural;
+   begin
+      les_sensor (Trig_venstre, Echo_venstre, avstand);
+
+      return avstand;
+   end les_venstre;
+
+
+
+
+   function les_hoyre return natural is
+      avstand : natural;
+   begin
+      les_sensor (Trig_hoyre, Echo_hoyre, avstand);
+
+      return avstand;
+   end les_hoyre;
 
 
 
