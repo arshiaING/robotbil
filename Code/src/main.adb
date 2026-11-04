@@ -13,6 +13,7 @@ avstand : natural;
 begin
    put_line ("starter test av tre ultralydsensorer.");
 
+   -- klargjør motorkortet og sender stopp ved oppstart
    bil.initialize;
    ultralyd.initialize;
 
@@ -20,15 +21,18 @@ begin
 
 
 
+   -- leser én sensor om gangen så de ikke sender samtidig
    loop
       avstand := ultralyd.les_foran;
 
+      -- 0 betyr at målingen er ugyldig
       if avstand = 0 then
          put_line ("foran ikke gyldig.");
       else
          put_line ("foran:" & natural'image (avstand) & " cm");
       end if;
 
+      -- pause så vi rekker å lese utskriften
       delay until clock + seconds (1);
 
 
