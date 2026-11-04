@@ -2,6 +2,7 @@ with MicroBit;
 with nRF.GPIO; use nRF.GPIO;
 with MicroBit.TimeHighspeed;
 with Ada.Real_Time; use Ada.Real_Time;
+with MicroBit.Console; use MicroBit.Console;
 
 
 
@@ -124,12 +125,14 @@ package body Ultralyd is
 
       -- echo skal være lavt før en ny måling
       if Echo.Set then
+         put_line ("echo er høyt før start.");
          return;
       end if;
 
       send_puls (Trig);
 
       if not sjekk_ultralyd (Echo) then
+         put_line ("echo ble ikke registrert innen 10 ms.");
          return;
       end if;
 
