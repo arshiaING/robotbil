@@ -7,6 +7,10 @@ from ultralytics import YOLO
 USE_ESP32_CAM = False
 ESP32_CAM_URL = "http://192.168.1.100:81/stream"
 
+# Evaluation settings
+EVALUATION_FRAMES = 100
+execution_times = []
+
 # Load YOLO model
 model = YOLO("yolo11n.pt")
 
@@ -39,6 +43,24 @@ while True:
     execution_time = (end_time - start_time) * 1000
 
     print(f"YOLO Execution Time: {execution_time:.2f} ms")
+
+    # Store execution time
+    execution_times.append(execution_time)
+
+    # Evaluate every 100 frames
+    if len(execution_times) == EVALUATION_FRAMES:
+        average_time = sum(execution_times) / len(execution_times)
+        minimum_time = min(execution_times)
+        maximum_time = max(execution_times)
+
+        print("\n--- YOLO Execution Time Evaluation ---")
+        print(f"Frames: {EVALUATION_FRAMES}")
+        print(f"Average: {average_time:.2f} ms")
+        print(f"Minimum: {minimum_time:.2f} ms")
+        print(f"Maximum: {maximum_time:.2f} ms")
+        print("--------------------------------------\n")
+
+        execution_times.clear()
 
     # Object position
     width = frame.shape[1]
