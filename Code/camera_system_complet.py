@@ -1,12 +1,13 @@
 
 import cv2
+import time
 from ultralytics import YOLO
 
 # Camera settings
 USE_ESP32_CAM = False
 ESP32_CAM_URL = "http://192.168.1.100:81/stream"
 
-# Load YOLO
+# Load YOLO model
 model = YOLO("yolo11n.pt")
 
 # Choose camera
@@ -28,8 +29,16 @@ while True:
         print("Cannot read image")
         break
 
+    # Measure YOLO execution time
+    start_time = time.perf_counter()
+
     # Object detection
     results = model(frame, conf=0.5, verbose=False)
+
+    end_time = time.perf_counter()
+    execution_time = (end_time - start_time) * 1000
+
+    print(f"YOLO Execution Time: {execution_time:.2f} ms")
 
     # Object position
     width = frame.shape[1]
@@ -51,6 +60,18 @@ while True:
 
     # Show result
     image = results[0].plot()
+
+    # Show execution time on image
+    cv2.putText(
+        image,
+        f"YOLO Time: {execution_time:.2f} ms",
+        (20, 40),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.8,
+        (0, 255, 0),
+        2
+    )
+
     cv2.imshow("Robot Camera", image)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
