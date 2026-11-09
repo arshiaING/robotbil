@@ -1,7 +1,9 @@
 with Ada.Real_Time; use Ada.Real_Time;
-with bil;
+with MicroBit.MotorDriver; use MicroBit.MotorDriver;
 with MicroBit.Console; use MicroBit.Console;
-with ultralyd;
+with MicroBit; use MicroBit;
+with MicroBit.Types; use MicroBit.Types;
+with MicroBit.Ultrasonic;
 
 -- USN PROJECT TEMPLATE INTELLIGENT REAL-TIME SYSTEMS
 -- Project name: [ADAM]
@@ -9,13 +11,16 @@ with ultralyd;
 
 
 procedure Main with Priority => 0 is
-avstand : natural;
+   package sensor_foran is new MicroBit.Ultrasonic (MB_P1, MB_P2);
+   package sensor_venstre is new MicroBit.Ultrasonic (MB_P8, MB_P13);
+   package sensor_hoyre is new MicroBit.Ultrasonic (MB_P14, MB_P15);
+
+   avstand : Distance_cm;
 begin
    put_line ("starter test av tre ultralydsensorer.");
 
-   -- klargjør motorkortet og sender stopp ved oppstart
-   bil.initialize;
-   ultralyd.initialize;
+   -- sender stopp før sensortesten
+   Drive (Stop);
 
    put_line ("sensorer klare.");
 
@@ -23,36 +28,36 @@ begin
 
    -- leser én sensor om gangen så de ikke sender samtidig
    loop
-      avstand := ultralyd.les_foran;
+      avstand := sensor_foran.Read;
 
-      -- 0 betyr at målingen er ugyldig
-      if avstand = 0 then
+      -- verdier under 2 betyr at målingen er ugyldig
+      if avstand < 2 then
          put_line ("foran ikke gyldig.");
       else
-         put_line ("foran:" & natural'image (avstand) & " cm");
+         put_line ("foran:" & Distance_cm'image (avstand) & " cm");
       end if;
 
       -- pause så vi rekker å lese utskriften
       delay until clock + seconds (1);
 
 
-      avstand := ultralyd.les_venstre;
+      avstand := sensor_venstre.Read;
 
-      if avstand = 0 then
+      if avstand < 2 then
          put_line ("venstre ikke gyldig.");
       else
-         put_line ("venstre:" & natural'image (avstand) & " cm");
+         put_line ("venstre:" & Distance_cm'image (avstand) & " cm");
       end if;
 
       delay until clock + seconds (1);
 
 
-      avstand := ultralyd.les_hoyre;
+      avstand := sensor_hoyre.Read;
 
-      if avstand = 0 then
+      if avstand < 2 then
          put_line ("høyre ikke gyldig.");
       else
-         put_line ("høyre:" & natural'image (avstand) & " cm");
+         put_line ("høyre:" & Distance_cm'image (avstand) & " cm");
       end if;
 
       put_line ("");

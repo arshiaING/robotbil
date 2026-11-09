@@ -1,0 +1,1 @@
+her er eldre kode med bruk av feilfunksjoner 

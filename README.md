@@ -12,15 +12,4 @@ kunne unngå dem selv.
 Vi skal også lære å kjøre flere oppgaver samtidig og ta hensyn
 til tidskrav og sikkerhet.
 
-## Hvordan vi jobber
 
-Vi bygger opp prosjektet steg for steg.
-Først lager vi dokumentasjonen og setter opp Ada-prosjektet.
-Deretter jobber vi med motorstyring, sensorer og automatisk kjøring.
-
-Vi skriver ned hva vi har laget, hva vi har testet og hva som
-gjenstår.
-
-## Dokumentasjon
-
-Planen, kravene og malene for loggene ligger i [docs](docs/README.md).
