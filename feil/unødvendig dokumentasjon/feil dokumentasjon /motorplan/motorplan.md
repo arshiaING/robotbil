@@ -8,13 +8,23 @@ manuell og automatisk kjøring.
 Bilen skal kunne kjøre fremover, bakover, sidelengs,
 rotere til høyre og venstre og stoppe.
 
-## Hva vi har laget
+## Løsningen nå
 
-Motorstyringen er samlet i pakken Bil.
+vi bruker lærerens `MicroBit.MotorDriver.Drive` direkte.
+biblioteket klargjør motorkortet automatisk.
+`main.adb` sender `Drive (Stop)` før sensortesten.
+versjonen er kompilert lokalt, men ikke fysisk testet på bilen.
+
+## Den arkiverte Bil-pakken
+
+avsnittet under beskriver koden som nå ligger i
+[kodearkivet](<../../Code/feil kode/motor/>).
+
+motorstyringen var samlet i pakken Bil.
 
 - bil.ads beskriver kommandoene vi kan bruke.
 - bil.adb inneholder hvordan kommandoene styrer motorene.
-- main.adb bestemmer hvilke kommandoer som skal kjøres.
+- det tidligere hovedprogrammet bestemte hvilke Bil-kommandoer som skulle kjøres.
 
 | Del | Kommandoer | Status |
 |---|---|---|
@@ -22,14 +32,14 @@ Motorstyringen er samlet i pakken Bil.
 | V2 | snu_hoyre og snu_venstre | Skrevet og kompilert |
 | V3 | sidelengs_hoyre og sidelengs_venstre | Skrevet og kompilert |
 
-Hovedprogrammet kaller foreløpig bare Bil.Initialize.
-Denne klargjør motorkortet og sender stopp.
-Deretter blir hovedprogrammet stående i en venteløkke.
+Den arkiverte pakken hadde `Bil.Initialize` for oppstart og stopp.
+Det aktive hovedprogrammet bruker nå lærerens `Drive (Stop)` og `Read`.
 
-## Motorpådrag
+## Motorpådrag i den arkiverte koden
 
-Kommandoene bruker kraft fra 0 til 100.
-Verdien regnes om til motorpådrag fra 0 til 4095.
+Bil-kommandoene brukte kraft fra 0 til 100.
+Verdien ble regnet om til motorpådrag fra 0 til 4095.
+Lærerens `Drive` bruker pådrag fra 0 til 4095 direkte.
 
 Motorpådraget er ikke en måling av bilens faktiske fart.
 
