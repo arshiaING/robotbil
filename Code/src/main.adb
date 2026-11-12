@@ -1,66 +1,48 @@
 with Ada.Real_Time; use Ada.Real_Time;
-with MicroBit.MotorDriver; use MicroBit.MotorDriver;
 with MicroBit.Console; use MicroBit.Console;
 with MicroBit; use MicroBit;
+with Ada.Execution_Time; use Ada.Execution_Time;
 with MicroBit.Types; use MicroBit.Types;
 with MicroBit.Ultrasonic;
 
--- USN PROJECT TEMPLATE INTELLIGENT REAL-TIME SYSTEMS
--- Project name: [ADAM]
--- Project members: [Arshia, Nasim, Leo.]
-
-
+-- Måleoppsett fra lærerens eksempel, tilpasset med AI hjelp.
 procedure Main with Priority => 0 is
-   package sensor_foran is new MicroBit.Ultrasonic (MB_P1, MB_P2);
-   package sensor_venstre is new MicroBit.Ultrasonic (MB_P8, MB_P13);
-   package sensor_hoyre is new MicroBit.Ultrasonic (MB_P14, MB_P15);
+   package sensor1 is new MicroBit.Ultrasonic (MB_P0, MB_P1);
 
-   avstand : Distance_cm;
+   Time_Now_Stopwatch : Time;
+   Time_Now_CPU : CPU_Time;
+   Elapsed_Stopwatch : Time_Span;
+   Elapsed_CPU : Time_Span;
+   AmountOfMeasurement : Integer := 10;
+
+   Distance : Distance_cm := 0;
 begin
-   put_line ("starter test av tre ultralydsensorer.");
-
-   -- sender stopp før sensortesten
-   Drive (Stop);
-
-   put_line ("sensorer klare.");
-
-
-
-   -- leser én sensor om gangen så de ikke sender samtidig
    loop
-      avstand := sensor_foran.Read;
+      Elapsed_Stopwatch := Time_Span_Zero;
+      Elapsed_CPU := Time_Span_Zero;
 
-      -- verdier under 2 betyr at målingen er ugyldig
-      if avstand < 2 then
-         put_line ("foran ikke gyldig.");
-      else
-         put_line ("foran:" & Distance_cm'image (avstand) & " cm");
-      end if;
+      for Index in 1 .. AmountOfMeasurement loop
+         Time_Now_Stopwatch := Clock;
+         Time_Now_CPU := Clock;
 
-      -- pause så vi rekker å lese utskriften
-      delay until clock + seconds (1);
+         Distance := sensor1.Read;
 
+         Elapsed_CPU := Elapsed_CPU + (Clock - Time_Now_CPU);
+         Elapsed_Stopwatch :=
+           Elapsed_Stopwatch + (Clock - Time_Now_Stopwatch);
 
-      avstand := sensor_venstre.Read;
+         Put_Line ("Front: " & Distance_cm'Image (Distance));
+         delay 0.05;
+      end loop;
 
-      if avstand < 2 then
-         put_line ("venstre ikke gyldig.");
-      else
-         put_line ("venstre:" & Distance_cm'image (avstand) & " cm");
-      end if;
+      Elapsed_CPU := Elapsed_CPU / AmountOfMeasurement;
+      Elapsed_Stopwatch := Elapsed_Stopwatch / AmountOfMeasurement;
 
-      delay until clock + seconds (1);
-
-
-      avstand := sensor_hoyre.Read;
-
-      if avstand < 2 then
-         put_line ("høyre ikke gyldig.");
-      else
-         put_line ("høyre:" & Distance_cm'image (avstand) & " cm");
-      end if;
-
-      put_line ("");
-      delay until clock + seconds (1);
+      Put_Line
+        ("Average CPU time: " & To_Duration (Elapsed_CPU)'Image
+         & " seconds");
+      Put_Line
+        ("Average Stopwatch time: " & To_Duration (Elapsed_Stopwatch)'Image
+         & " seconds");
    end loop;
 end Main;
