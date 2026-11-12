@@ -21,14 +21,12 @@ package body ultralydsensor is
       periode : constant Time_Span := Milliseconds (180); --test 1
       deadline : constant Time_Span := Milliseconds (130); -- test 1
       pause : constant Time_Span := Milliseconds (50); -- så vi ikke leser samme igjen 
-      neste : Time := Clock;
+      neste : Time := Clock; 
       slutt : Time;
 
+      -- bytta variabel navn fordi jeg trykker på tab når jeg skriver og den gir meg dårlige navn og hadde verdi i lager navn så kan også bruke den her 
       valg : sensorvalg;
-      ny : maaling;
-
-
-
+      ny : verdi;
 
    begin
       loop
@@ -37,7 +35,7 @@ package body ultralydsensor is
          valg := lager.hent_valg;
 
          -- valg gar en som er vent fordi den ikke passer inn her så vil den bare gå videre vi for bare tidmeldign 
-               --
+               -- dette bare bestemmer hva som skal kjøres
             if valg = bare_foran then
                ny.tidspunkt := Clock;
                ny.avstand := sensor_foran.Read;
@@ -79,12 +77,10 @@ package body ultralydsensor is
 
 
          if slutt > neste + deadline then
-               Put_Line("Sluttkontrollen var etter testfristen.");
+            Put_Line("Sluttkontrollen var etter testfristen.");
          end if;
 
          delay until slutt + pause;
-
-         end if;
 
          neste := neste + periode;
       end loop;
