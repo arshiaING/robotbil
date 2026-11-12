@@ -23,6 +23,7 @@ procedure Main with Priority => 0 is
 
    Distance : Distance_cm := 0;
    Distance2 : Distance_cm := 0;
+   Distance3 : Distance_cm := 0;
 
 
 begin
@@ -34,11 +35,15 @@ begin
          Time_Now_Stopwatch := Clock;
          Time_Now_CPU := Clock;
 
-
-
+         -- jeg for blank side jeg tror det er noe fiel med sensoren så det sitter fast 
+         -- jeg fikk 2 start start så det er noe feil med sensor 2 
+         -- fikk det til fant ikke feilen det bare fungerete
+         put_line ("start");
          Distance := sensor3.Read;
+         put_line ("start");
          Distance2 := sensor2.Read;
-
+         put_line ("start");
+         Distance3 := sensor1.Read;
 
          Elapsed_CPU := Elapsed_CPU + (Clock - Time_Now_CPU);
          Elapsed_Stopwatch :=
@@ -48,6 +53,7 @@ begin
          -- jeg ønsker å bare sjekke hvor mye cpu tid det tar og slikt så det er ikke så viktig med navn og slikt 
          Put_Line ("front: " & Distance_cm'Image (Distance));
          Put_Line ("right: " & Distance_cm'Image (Distance2));
+         Put_Line ("left: " & Distance_cm'Image (Distance3));
          delay 0.05;
       end loop;
 
