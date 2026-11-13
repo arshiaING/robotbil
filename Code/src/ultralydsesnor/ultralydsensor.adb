@@ -3,6 +3,7 @@ with MicroBit; use MicroBit;
 with MicroBit.Console; use MicroBit.Console;
 with MicroBit.Ultrasonic;
 with lagring; use lagring;
+with Ada.Execution_Time; use Ada.Execution_Time;
 
 package body ultralydsensor is
 
@@ -16,28 +17,38 @@ package body ultralydsensor is
 
 
    task body sensoroppgave is
-
    -- variabler 
-      periode : constant Time_Span := Milliseconds (180); --test 1
+      periode : constant Time_Span := Milliseconds (180); --test 1 
       deadline : constant Time_Span := Milliseconds (130); -- test 1
       pause : constant Time_Span := Milliseconds (50); -- så vi ikke leser samme igjen 
-      neste : Time := Clock; 
+      neste : Time := Clock; -- clock gir tiden nå dette bruker jeg til å vente perioden 
       slutt : Time;
 
+
+      Time_Now_CPU : CPU_Time;
+      Elapsed_CPU : Time_Span;
+
       -- bytta variabel navn fordi jeg trykker på tab når jeg skriver og den gir meg dårlige navn og hadde verdi i lager navn så kan også bruke den her 
+      -- dette bare bestemmer hva som skal kjøres kan gi oss venter, bare_foran, begge_sider og alle_tre
       valg : sensorvalg;
+      -- bare lager plass ny vil bare gå inn til lager 
       ny : verdi;
 
    begin
       loop
-         delay until neste;
+         delay until neste; -- første runde går den med engang så skal den vente 180 ms til neste runde men den må også vente på at prosessoren blir ferdig først sp det kan hende at det ikke er 180ms akkurat
+         Time_Now_CPU := Ada.Execution_Time.Clock;
+         valg := lager.hent_valg; -- henter valg fra lager 
 
-         valg := lager.hent_valg;
 
-         -- valg gar en som er vent fordi den ikke passer inn her så vil den bare gå videre vi for bare tidmeldign 
-               -- dette bare bestemmer hva som skal kjøres
+
+
+
+
+         -- bruker valgen til å bestemme hva som skal brukes kan bruke case her 
+               
             if valg = bare_foran then
-               ny.tidspunkt := Clock;
+               ny.tidspunkt := Clock; -- om foran ikke Reader tror jeg den vil bare vente så det kommer kl også venter den så det kan bli feil (kan løse dette ved å sette tid på det så om det tar for mye tid gå videre )
                ny.avstand := sensor_foran.Read;
                lager.lagre_foran (ny);
 
@@ -67,21 +78,24 @@ package body ultralydsensor is
          end if;
 
 
+         -- vis valg blir venter så vil den bare komme ned hit 
+         Elapsed_CPU := Ada.Execution_Time.Clock - Time_Now_CPU;
+         slutt := Ada.Real_Time.Clock;
 
-         slutt := Clock;
+         if valg = bare_foran then
+            Put_Line
+              ("CPU time: " & Duration'Image (To_Duration (Elapsed_CPU))
+               & " seconds");
+            Put_Line
+              ("Response time: " & Duration'Image (To_Duration (slutt - neste))
+               & " seconds");
 
-            
-        --test for perioden    
-         Put_Line("Tid til sluttkontroll:" & Duration'Image(To_Duration (slutt - neste)) & " s");
-
-
-
-         if slutt > neste + deadline then
-            Put_Line("Sluttkontrollen var etter testfristen.");
+            if slutt > neste + deadline then
+               Put_Line ("Deadline");
+            end if;
          end if;
 
          delay until slutt + pause;
-
          neste := neste + periode;
       end loop;
 
