@@ -1,56 +1,28 @@
-# Min del – Nasim
+# My Part – Dynamic Period and Deadline for Ultrasonic Sensors
 
-**Dynamisk periode og deadline for ultralydsensorer**
+> **Editing note (not part of the report):** The English paragraphs below are taken from the sentences Nasim dictated in Persian and we translated together in this conversation. Technical code snippets have been retained from the original uploaded Markdown document. Any topics not covered by those dictated sentences are clearly marked rather than filled with new report prose. Please verify the snippets against the final Ada implementation: the screenshots showed an additional `Har_Gyldig_Foran` case not present in the original Markdown file.
 
-## 1. Innledning
+## 1. Introduction
 
-I dette prosjektet jobber vi med en Mecanum-robot som skal kunne bevege seg uten å kollidere med hindringer. Roboten bruker tre ultralydsensorer: en foran, en på venstre side , en på høyre side.
+Scheduling is one of the important parts of our system. Because scheduling decides when different tasks should run and helps the system complete them on time.
 
-Min del av prosjektet handler om dynamisk periode og deadline for ultralydsensorene.
+We use scheduling in our robot project to control when the ultrasonic sensors measure distances. The robot needs to detect obstacles on time to avoid collisions.
 
-En periode bestemmer hvor ofte en oppgave skal utføres. En deadline bestemmer hvor lang tid oppgaven har på å bli ferdig.
+Each task can have its own period and deadline. The deadline is the maximum time allowed to complete a task. The period is the time between two starts of the same task. If a task takes longer than its deadline, we call it a deadline miss.
 
-I et sanntidssystem er dette viktig fordi roboten må få informasjon fra sensorene og reagere raskt nok på hindringer.
+## 2. Goal
 
-Jeg har jobbet med en løsning perioden kan endres etter avstanden til hindringer og hvilke sensorer som brukes.
+Our goal was to make the sensors measure the distance more often when needed. When the robot has more space around it, the sensors do not need to measure as often, so we can avoid unnecessary measurements.
 
-## 2. Mål
+## 3. Starting Point and Planning
 
-Målet med arbeidet mitt er å lage en dynamisk periode for ultralydsensorene i Ada.
+In this part of the project, my task was to work with deadlines and dynamic periods for the ultrasonic sensors. I used the sensor code from my group member Arshia and added my own code to it, so I could change the periods depending on the distance and which sensors were active.
 
-Jeg ønsker at roboten skal lese frontsensoren oftere når den nærmer seg en hindring, og sjeldnere når det er bra plass.
+> **Not yet described in my own words:** The original document's planning estimates (76 ms / 102 ms / 128 ms), teacher example, and initial 100 ms / 180 ms alternatives. These have not been presented as Nasim's own English statements.
 
-Jeg vil også kontrollere om sensoroppgaven blir ferdig innenfor en bestemt deadline.
+## 4. Implementation in Ada
 
-Målet er å redusere unødvendige sensormålinger og samtidig gi styringssystemet oppdaterte avstandsverdier.
-
-## 3. Utgangspunkt og planlegging
-
-Jeg har tatt utgangspunkt i lærerens eksempel med Ada.Real_Time, Clock og delay until.
-
-Jeg har brukt samme prinsipp, men laget en løsning der perioden kan endres under kjøring.
-
-Jeg har også brukt den eksisterende ultralydsensorkoden fra Arshia, siden vi arbeider med de samme tre sensorene.
-
-| Sensoravlesning | Estimert tid |
-| --- | --- |
-| Frontsensor | 76 ms |
-| Begge sidesensorene | 102 ms |
-| Alle tre sensorene | 128 ms |
-
-Disse beregningene bygger på antatte måletider og en pause på 50 ms. De brukes som et utgangspunkt for valg av periode og deadline.
-
-I den første planen vurderte jeg også andre perioder, blant annet 100 ms og 180 ms for frontsensoren. Under implementasjonen valgte jeg flere perioder for forskjellige avstander og sensorvalg.
-
-## 4. Implementasjon i Ada
-
-Jeg har skrevet kode for dynamisk periode og kontroll av deadline i Ada.
-
-Koden er lagret på GitHub i min egen branch, nasim-dynamisk-periode, i filen dynamisk_periode_nasim.adb.
-
-### 4.1 Periode og deadline
-
-Jeg har definert perioden, deadline og pausen mellom sensoravlesningene:
+### 4.1 Time Settings
 
 ```ada
 periode : Time_Span := Milliseconds (180);
@@ -58,25 +30,13 @@ deadline : constant Time_Span := Milliseconds (130);
 pause : constant Time_Span := Milliseconds (50);
 ```
 
-Jeg bruker Time_Span fra Ada.Real_Time for å håndtere tidsverdiene.
+I used Ada.Real_Time to control the timing of the sensor task. We can see that the sensor task starts with a period of 180 ms, and I set the deadline to 130 ms. When more than one of our sensors is active, I used a 50 ms pause between the sensor readings.
 
-Perioden er en variabel fordi den skal kunne endres under kjøring. Deadline er satt til 130 ms som en foreløpig tidsgrense, mens pausen mellom sensoravlesningene er satt til 50 ms.
-
-### 4.2 Valg av sensorer
-
-Sensoroppgaven bruker lager.hent_valg for å finne ut hvilke sensorer som skal leses.
+### 4.2 Sensor Selection
 
 ```ada
 valg := lager.hent_valg;
 ```
-
-Jeg bruker fire forskjellige sensorvalg:
-
-- venter: Ingen sensoravlesning i denne kjøringen.
-- bare_foran: Bare frontsensoren.
-- begge_sider: Høyre og venstre sensor.
-- alle_tre: Alle tre sensorene.
-Når bare frontsensoren brukes, leses avstanden og lagres slik:
 
 ```ada
 ny.tidspunkt := Clock;
@@ -85,13 +45,9 @@ lager.lagre_foran (ny);
 avstand_foran := Integer (ny.avstand);
 ```
 
-Avstanden fra frontsensoren brukes videre til å bestemme neste periode.
+> **Not yet described in my own words:** How `lager.hent_valg` selects the modes and how the measured distance is saved. Code retained unchanged from the uploaded original.
 
-### 4.3 Dynamisk periode
-
-Dette er hoveddelen av arbeidet mitt.
-
-Jeg har laget forskjellige perioder avhengig av sensorvalg og avstanden foran roboten.
+### 4.3 Dynamic Period Based on Distance
 
 ```ada
 if valg = venter then
@@ -111,59 +67,35 @@ elsif valg = bare_foran then
 end if;
 ```
 
-Når bare frontsensoren brukes, har jeg valgt følgende perioder:
+This part of the code is the main part of my work. I used different periods depending on which sensors were active.
 
-| Avstand foran roboten | Periode |
-| --- | --- |
-| 20 cm eller mindre | 180 ms |
-| Over 20 cm til 50 cm | 240 ms |
-| Over 50 cm | 350 ms |
+For example, when only the front sensor was active, our period changed based on the measured distance. If the obstacle was close, the period became shorter so the sensor could measure the distance more often.
 
-Hvis roboten kommer nær en hindring, blir perioden kortere. Da kan frontsensoren lese avstanden oftere.
+When the obstacle was farther away, my period became longer because the sensor did not need to measure the distance as often.
 
-Hvis hindringen er langt unna, blir perioden lengre.
+For example, if the distance is 20 cm or less, the period is 180 ms. If the distance is more than 50 cm, our period is 350 ms. And if the distance is between 20 and 50 cm, our period is 240 ms.
 
-Når begge sidesensorene brukes, er perioden 300 ms. Når alle tre sensorene brukes, er perioden 400 ms.
+When both of our side sensors are active, our period is 300 ms. And when all three of our sensors are active, our period is 400 ms.
 
-Jeg har valgt lengre perioder når flere sensorer brukes, fordi flere sensoravlesninger kan kreve mer tid.
+> **Code discrepancy to check:** In the later screenshots, the `bare_foran` branch also checks `not Har_Gyldig_Foran` and uses `Avstand_Foran`. The snippet above deliberately preserves the uploaded Markdown source rather than silently replacing it with a reconstructed code version.
 
-### 4.4 Deadline og tidskontroll
-
-Jeg har også lagt inn en kontroll for å undersøke om sensoroppgaven overskrider deadline.
-
-Før sensoravlesningene registrerer jeg starttidspunktet:
+### 4.4 Deadline Monitoring
 
 ```ada
 start := Clock;
-```
-
-Etter sensoravlesningene registrerer jeg sluttidspunktet:
-
-```ada
 slutt := Clock;
-```
-
-Deretter kontrollerer programmet deadline:
-
-```ada
 if slutt > start + deadline then
    Put_Line ("Deadline overskredet.");
 end if;
 ```
 
-Hvis utførelsestiden blir lengre enn 130 ms, skriver programmet meldingen Deadline overskredet.
+In my code, I used Clock to check how long the sensor task takes to finish. The program measures the response time and compares it with our deadline of 130 ms.
 
-Denne kontrollen brukes til å registrere et deadline-brudd. Den stopper ikke roboten automatisk.
+If the task takes longer than the deadline, we get a warning message in our terminal. Otherwise, the program shows a message in the terminal that the task was completed within the deadline.
 
-### 4.5 Planlegging av neste kjøring
+> **Code discrepancy to check:** The original snippet above prints a warning only. The separate `else` / `Deadline OK` behavior was shown in your later screenshots, but is not in this uploaded original snippet.
 
-Jeg bruker delay until for å styre når sensoroppgaven skal starte neste gang.
-
-```ada
-delay until neste;
-```
-
-Etter sensoravlesningene beregnes neste starttidspunkt:
+### 4.5 Scheduling the Next Period
 
 ```ada
 neste := start + periode;
@@ -173,52 +105,56 @@ if neste <= Clock then
 end if;
 ```
 
-Hvis neste planlagte starttidspunkt allerede er passert, skriver programmet en melding og planlegger en ny starttid.
+After each execution, the program calculates when the sensor task should start again. The program uses the selected period to calculate the next start time.
 
-Dette gjør at sensoroppgaven kan bruke forskjellige perioder mellom kjøringene.
+If that time has already passed, the program shows a warning message in the terminal and sets a new start time for the next execution.
 
-## 5. Hvorfor jeg har valgt denne løsningen
+```ada
+delay until neste;
+```
 
-Jeg har valgt dynamisk periode fordi roboten ikke alltid trenger like hyppige sensormålinger.
+The command `delay until Neste;` is used in the main loop to wait until the next scheduled start time.
 
-Når roboten kjører fremover og har god plass, kan frontsensoren bruke en lengre periode.
+## 5. Why I Chose This Solution
 
-Når roboten nærmer seg en hindring, blir perioden kortere, slik at roboten kan få informasjon om avstanden oftere.
+We also use different periods depending on which sensors are active. Because this helps us avoid unnecessary measurements when our robot does not need information from all three sensors.
 
-Når roboten trenger å undersøke hvilken vei den kan kjøre, kan begge sidesensorene brukes.
+When the obstacle is close, our front sensor measures the distance more often. When the obstacle is far away, we have a longer period. This means that our sensor measures the distance less often.
 
-På denne måten ønsker jeg å tilpasse sensoravlesningene til robotens situasjon.
+## 6. Working Together
 
-## 6. Samarbeid med resten av roboten
+In our project, we worked together to combine the sensor code with the scheduling code. For example, Arshia worked on the sensor measurement code, and Nasim worked on controlling the periods and checking the deadlines.
 
-Min kode skal fungere sammen med den eksisterende sensorlogikken og motorstyringen.
+When we used more than one sensor, we added a 50 ms pause between the sensor readings. This helped us separate the measurements from different sensors more easily.
 
-Sensoroppgaven leser avstandene og lagrer resultatene gjennom lagring. Styringssystemet skal bruke disse verdiene for å bestemme hvordan roboten skal bevege seg.
+> **Not yet described in my own words:** The original document's motor-control integration and behavior when an obstacle is 20 cm away. Left out rather than writing an invented first-person explanation.
 
-Når frontsensoren oppdager en hindring på 20 cm eller mindre, er målet at roboten skal stoppe og undersøke sidene før den velger en ny retning.
+## 7. Results and Testing
 
-Min del styrer perioden for sensoroppgaven, mens motorstyringen er en annen del av gruppeprosjektet.
+We tested our combined code for dynamic scheduling and ultrasonic sensors. We tested the front sensor, both side sensors, and all three sensors together.
 
-## 7. Testing og utfordringer
+The results of our tests are shown in the table below.
 
-Vi skal undersøke hvordan de dynamiske periodene fungerer sammen med resten av roboten.
+| Sensor configuration | Measured distance | Period | Response time |
+| --- | --- | --- | --- |
+| Front sensor | 41 cm | 240 ms | 4.90 ms |
+| Right and left sensors | 38 cm / 35 cm | 300 ms | 59.37 ms |
+| All three sensors | 29 cm / 6 cm / 35 cm | 400 ms | 111.41 ms |
 
-Først skal vi bruke en fast periode på 200 ms. Deretter skal vi teste de dynamiske periodene og måle utførelsestiden for de forskjellige sensorvalgene.
+In our tests, we observed that the response time increased when more sensors were active. For example, the front sensor had the shortest response time of 4.90 ms, while the highest response time was 111.41 ms when all three sensors were active.
 
-En utfordring er at sensoroppgaven bruker mer tid når flere sensorer leses. Vi må også ta hensyn til pausene mellom målingene.
+Also, the highest response time was still below our deadline of 130 ms. In our tests shown above, we can see that we did not have any deadline misses.
 
-Vi skal kontrollere om deadline på 130 ms kan overholdes, og om perioden endres riktig når avstanden til hindringer endres.
+We also measured the time between two consecutive starts of the sensor task. We observed that the measured time intervals were approximately 240 ms, 300 ms, and 400 ms. These values were close to the periods we selected in our original code.
 
-I koden min endres perioden etter avstanden når bare frontsensoren brukes. Når alle tre sensorene brukes, er perioden satt til 400 ms.
+Finally, our tests showed that the three recorded sensor configurations followed our expected timing.
 
-Resultatene skal brukes til å vurdere om periodene eller deadline må justeres.
+## 8. Discussion and Limitations
 
-## 8. Oppsummering
+> **Not yet dictated in my own English wording:** The detailed Chapter 5 discussion, including the reported 300 ms maximum valid interval and the 400 ms conflict, was originally drafted by the assistant after Arshia's Norwegian message. It is deliberately not presented here as something Nasim dictated. The verified reported issue should be included in the final group discussion once its requirement is confirmed.
 
-Jeg har skrevet kode for dynamisk periode og deadline for ultralydsensorene på Mecanum-roboten.
+## 9. Summary
 
-Jeg har brukt Ada.Real_Time, Clock og delay until for å styre når sensoroppgaven skal kjøre.
+Scheduling helps us use our sensors more efficiently and at the same time control the timing requirements of our system.
 
-Perioden endres etter sensorvalget og avstanden foran roboten. Jeg har også lagt inn kontroll av deadline og periodeoverskridelse.
-
-Målet med arbeidet mitt er at roboten skal kunne lese sensorene oftere når det er nødvendig, og samtidig redusere unødvendige sensormålinger.
+> **Not yet described in my own words:** A fuller project summary. The sentence above is the closing sentence Nasim originally dictated for Scheduling.
