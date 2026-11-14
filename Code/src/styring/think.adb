@@ -30,7 +30,7 @@ package body think is
    use type MicroBit.Types.Distance_cm;
 
    periode : constant Time_Span := Milliseconds (50); -- test 1
-   maks_alder : constant Time_Span := Milliseconds (300); -- random
+   maks_alder : constant Time_Span := Milliseconds (500); -- random
 
    type tilstand is
      (venter_foran, kjorer_fremover, sjekker_sider,

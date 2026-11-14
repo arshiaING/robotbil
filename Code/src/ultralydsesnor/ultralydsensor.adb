@@ -75,6 +75,7 @@ package body ultralydsensor is
             ny.tidspunkt := Clock;
             ny.avstand := sensor_venstre.Read;
             lager.lagre_venstre (ny);
+            
          end if;
 
 
