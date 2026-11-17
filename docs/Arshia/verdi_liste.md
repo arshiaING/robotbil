@@ -17,6 +17,8 @@ sum_side_avstand = 30
 
 minst_sideavstand = 12
 
+
+
 ## verdi for fart
 
 
@@ -30,7 +32,7 @@ verdi_gain_front_sensor =
 
 ## feil verdi etter hverandre 
 
-ultralyd_maks_ukyldig = komemr må teste 
+ultralyd_maks_ukyldig = 300ms
 
 
 

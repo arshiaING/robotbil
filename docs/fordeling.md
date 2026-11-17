@@ -9,5 +9,5 @@ ekstra oppgave
 - Bevis for at systemet fungere 
 
 
-Nasim - å lage kamera system og koble det til kjøre regler
+Nasim - lage dynasmisk periode for sensor 
 Leo - å jobbe med varme deteksjon sensor for å oppfage mennsker og legge det til kjøre reglene og andre sensorer 

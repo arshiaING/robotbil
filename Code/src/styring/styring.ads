@@ -1,14 +1,22 @@
-
-
-
+with prioitet;
 
 package styring is
 
-   -- valgene styringen kan gi
-   type handling is (stopp, fremover, snu_hoyre, snu_venstre);
+   task styringsoppgave
+     with Priority => prioitet.styring;
 
-   -- bruker avstandene i cm til å velge en handling
-   function velg_handling
-     (foran, venstre, hoyre : natural) return handling;
+
+
+
+
+   procedure sving_venstre; -- lar think velge venstre 
+   procedure sving_hoyre; -- videre
+   procedure stopp; -- videre
+   procedure fremover; --videre 
+
+
+
+  -- function ordre sendt return Boolean; -- burde ha noe som bekrefter at det har gåt igjennom 
+
 
 end styring;
